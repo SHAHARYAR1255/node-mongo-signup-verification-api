@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/f50df2eb-86ae-4a16-8976-e31790eeba55/resourceGroups/appsvc_linux_centralus_basic/providers/Microsoft.Web/sites/connect2collab",
+    "appService.deploySubpath": "."
+}

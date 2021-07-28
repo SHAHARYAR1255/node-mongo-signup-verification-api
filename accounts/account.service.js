@@ -2,9 +2,9 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
-const sendEmail = require('_helpers/send-email');
-const db = require('_helpers/db');
-const Role = require('_helpers/role');
+const sendEmail = require('../_helpers/send-email');
+const db = require('../_helpers/db');
+const Role = require('../_helpers/role');
 
 module.exports = {
     authenticate,
@@ -87,8 +87,15 @@ async function register(params, origin) {
     const account = new db.Account(params);
 
     // first registered account is an admin
-    const isFirstAccount = (await db.Account.countDocuments({})) === 0;
-    account.role = isFirstAccount ? Role.Admin : Role.User;
+    // -------------
+    // const isFirstAccount = (await db.Account.countDocuments({})) === 0;
+    // account.role = isFirstAccount ? Role.Admin : Role.User ;
+
+    //for student
+    // if (params.role === 'Student') account.role = Role.Student ;
+    // if (params.role === 'Company') account.role = Role.Company ;
+    // if (params.role === 'Mentor') account.role = Role.Mentor ;
+    
     account.verificationToken = randomTokenString();
 
     // hash password

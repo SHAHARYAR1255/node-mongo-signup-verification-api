@@ -4,12 +4,13 @@ const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const errorHandler = require('_middleware/error-handler');
+const errorHandler = require('./_middleware/error-handler');
+var logger = require('morgan');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-
+app.use(logger('dev'));
 // allow cors requests from any origin and with credentials
 app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
 
@@ -17,7 +18,7 @@ app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: 
 app.use('/accounts', require('./accounts/accounts.controller'));
 
 // swagger docs route
-app.use('/api-docs', require('_helpers/swagger'));
+app.use('/api-docs', require('./_helpers/swagger'));
 
 // global error handler
 app.use(errorHandler);

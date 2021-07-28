@@ -1,9 +1,9 @@
 ﻿const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
-const validateRequest = require('_middleware/validate-request');
-const authorize = require('_middleware/authorize')
-const Role = require('_helpers/role');
+const validateRequest = require('../_middleware/validate-request');
+const authorize = require('../_middleware/authorize')
+const Role = require('../_helpers/role');
 const accountService = require('./account.service');
 
 // routes
@@ -15,9 +15,11 @@ router.post('/verify-email', verifyEmailSchema, verifyEmail);
 router.post('/forgot-password', forgotPasswordSchema, forgotPassword);
 router.post('/validate-reset-token', validateResetTokenSchema, validateResetToken);
 router.post('/reset-password', resetPasswordSchema, resetPassword);
-router.get('/', authorize(Role.Admin), getAll);
+// router.get('/', authorize(Role.Admin), getAll);
+router.get('/', authorize(), getAll);
 router.get('/:id', authorize(), getById);
-router.post('/', authorize(Role.Admin), createSchema, create);
+// router.post('/', authorize(Role.Admin), createSchema, create);
+router.post('/', authorize(), createSchema, create);
 router.put('/:id', authorize(), updateSchema, update);
 router.delete('/:id', authorize(), _delete);
 
@@ -82,6 +84,7 @@ function registerSchema(req, res, next) {
         title: Joi.string().required(),
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
+        role: Joi.string().required(),
         email: Joi.string().email().required(),
         password: Joi.string().min(6).required(),
         confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
